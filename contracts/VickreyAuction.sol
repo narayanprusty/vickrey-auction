@@ -206,7 +206,7 @@ contract VickreyAuction is IERC721Receiver {
             address bidder = bidders[i];
             uint256 bid = auction.bids[bidder];
             if (bid == 0) {
-                unrevealed += auction.config.deposit;
+                unrevealed++;
             } else if (bid > firstHighestBid) {
                 winningBidder = bidder;
 
