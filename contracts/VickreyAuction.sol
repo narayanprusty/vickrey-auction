@@ -90,7 +90,12 @@ contract VickreyAuction is IERC721Receiver {
         _;
     }
 
-    // Accept negative amount for refunds
+    /**
+    * Accept negative amount for refunds
+    * 
+    * This function takes "base" which is the amount to charge and "less"
+    * the amount to refund
+    */
     modifier costs(uint256 base, uint256 less) {
         int256 refund = int256(msg.value) - int256(base) + int256(less);
         if (refund < 0) {
@@ -114,8 +119,10 @@ contract VickreyAuction is IERC721Receiver {
         phaseIs(tokenContract, tokenId, AuctionPhase.Bid)
         costs(auctions[tokenContract][tokenId].config.deposit, 0)
     {
-        // TODO: implement me!
-        revert("please implement placeBid() !");
+        require(auctions[tokenContract][tokenId].commitmentHashes[msg.sender] == "", "bid is already placed");
+
+        auctions[tokenContract][tokenId].bidders.push(msg.sender);
+        auctions[tokenContract][tokenId].commitmentHashes[msg.sender] = commitmentHash;
     }
 
     function revealBid(
@@ -192,8 +199,25 @@ contract VickreyAuction is IERC721Receiver {
             uint256 unrevealed
         )
     {
-        // TODO: implement me!
-        revert("Please implement countBids() !");
+        address[] storage bidders = auctions[tokenContract][tokenId].bidders;
+        Auction storage auction = auctions[tokenContract][tokenId];
+        uint256 firstHighestBid = 0;
+        for (uint i = 0; i < bidders.length; i++) {
+            address bidder = bidders[i];
+            uint256 bid = auction.bids[bidder];
+            if (bid == 0) {
+                unrevealed += auction.config.deposit;
+            } else if (bid > firstHighestBid) {
+                winningBidder = bidder;
+
+                secondHighestBid = firstHighestBid;
+                firstHighestBid = bid;
+
+                if(secondHighestBid == 0) {
+                    secondHighestBid = firstHighestBid;
+                }
+            }   
+        }
     }
 
     function disburse(

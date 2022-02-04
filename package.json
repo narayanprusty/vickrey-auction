@@ -5,7 +5,7 @@
     "test": "hardhat test",
     "compile": "hardhat compile"
   },
-  "devDependencies": {
+  "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@openzeppelin/contracts": "^4.4.0",
     "@typechain/ethers-v5": "^8.0.4",
