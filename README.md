@@ -53,16 +53,3 @@ To run the tests execute:
 yarn install
 yarn test
 ```
-
-## Technical Test
-
-There are two parts to this test:
-
-1. Implement the two missing functions `placeBid` and `countBids` (see the `TODO` comments in `VickreyAuction.sol`)
-2. Write a test that checks that everyone who should be refunded their deposits is refunded their deposit in the case of an auction default (either when not all bidders reveal or a bidder reveals late)
-
-We would also be interested in your comments on:
-
-- How could this code be improved?
-- What problems might arise with this system?
-- Are there any alternatives to this design you have thought of?
