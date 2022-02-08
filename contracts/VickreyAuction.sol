@@ -123,6 +123,8 @@ contract VickreyAuction is IERC721Receiver {
 
         auctions[tokenContract][tokenId].bidders.push(msg.sender);
         auctions[tokenContract][tokenId].commitmentHashes[msg.sender] = commitmentHash;
+
+        emit VickreyAuctionBid(tokenContract, tokenId, msg.sender, commitmentHash);
     }
 
     function revealBid(
